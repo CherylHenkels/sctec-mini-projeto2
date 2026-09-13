@@ -268,9 +268,23 @@ Inferência em imagens manuscritas próprias
 
 ## 🏁 Conclusão
 
-O mini-projeto implementa um fluxo completo de classificação de imagens com o MNIST, desde a exploração dos dados até a avaliação de modelos e testes em condições diferentes daquelas vistas durante o treinamento.
+Este projeto concentra-se na análise do conjunto de dados do Modified National Institute of Standards and Technology (MNIST) utilizando métodos de Aprendizado de Máquina. Implementamos o fluxo completo para a classificação das imagens desta base de dados. Inicialmente realizamos a aquisição via scikit-learn e a exploração da forma com que os dados estão distribuídos. Separamos os dados em treino (70% dos dados), validação (10%) e teste (20%) por meio de uma divisão estratificada para garantir uma distribuição homogênea das classes de números em cada um destes conjuntos. Normalizamos os pixels para ajudar na convergência e estabilidade no treinamento. Testamos três algoritmos usando a biblioteca scikit-learn, a saber, o **Support Vector Machine (SVM)**, o **Random Forest** e uma **Rede Neural (MLP)** simples. Analisando as métricas Accuracy, Precision, Recall e F1 dos modelos, o SVM com kernel RBF e C=10 obteve a maior acurácia no conjunto de teste (98,3%), mas seu tempo de processamento se mostrou muito elevado. O Random Forest, com 200 árvores e profundidade máxima 20, apresentou desempenho um pouco inferior, mas com custo de treinamento muito menor no ambiente utilizado no projeto. Em todos os modelos houve maior confusão entre os dígitos 4 e 9. A maioria previu 9 onde era 4. Em particular, para as redes neurais, essa confusão ocupa o segundo lugar, sendo o primeiro ocupado pela previsão de 4 onde era 9.
 
-Entre os três algoritmos avaliados, o **SVM com kernel RBF e `C=10` obteve a maior acurácia no conjunto de teste (98,3%)**. O **Random Forest com 200 árvores e profundidade máxima 20** apresentou desempenho um pouco inferior, mas com custo de treinamento muito menor no ambiente utilizado no projeto. O experimento com classes ocultadas e os testes com imagens próprias complementam a análise ao mostrar limitações importantes de generalização dos classificadores.
+Após isto, removemos duas classes do treinamento, 4 e 7, e treinamos o Random Forest, com os melhores hiperparâmetros observados na etapa anterior, sem nunca ter visto esses dois dígitos durante o ajuste dos pesos. A matriz de confusão mostrou que o classificador continua tentando atribuir rótulos às amostras dessas classes (contidas na base de teste), mas, como elas não existem mais no treino, ele força a classificação para outras classes conhecidas. Isso coincide com o conceito de "Falsa Certeza" (Overconfidence), que ocorre quando o modelo atribui uma probabilidade muito alta a uma previsão incorreta. 
+
+Além do mais, geramos no Paint imagens de cada um dos números do 0 ao 9 escritas à mão. Convertemos para a escala de cinza, invertemos as cores, redimensionamos para 28 x 28 pixels centralizando os números nas imagens e normalizamos para o intervalo [0.0, 1.0] a fim de deixar parecido com os dados do MNIST. Quando submetemos essas novas imagens à melhor versão do Random Forest, vimos que dos 10 dígitos, o modelo conseguiu prever corretamente a classe de 8 deles (o que significa uma acurácia de 80%). Durante a aplicação do modelo nas imagens, percebemos que havia números mais difíceis de serem identificados de forma correta. Isso pode acontecer tanto devido à diferença no número de pixels entre as imagens recolhidas por nós e as contidas na base MNIST quanto devido à localização da imagem. Após alguns testes, percebemos que os números 0, 1 e 2 eram mais fáceis de serem reconhecidos do que os outros. Verificamos também que o restante dos números era melhor identificado quando os traços dos números eram mais grossos. Mesmo testando vários formatos de números, vimos dificuldade em prever corretamente os números 7 e 9 (que ficaram errados em todos os testes que fizemos).
+
+## Possíveis Melhorias Futuras
+
+* Aplicar rotações leves, translações, variações de espessura de traço, além de ruído nas imagens de treino, para aproximar a distribuição do MNIST das condições dos desenhos manuais.
+
+* Usar técnicas para mitigar a "Falsa Certeza" observada no experimento de classes ocultadas, permitindo que o modelo expresse incerteza em vez de forçar uma classe conhecida. Talvez implementar uma opção de "não sei classificar" quando a probabilidade máxima prevista estiver abaixo de um limiar.
+
+* Deixar uma função que pegue qualquer imagem e faça pré-processamento que a deixe mais próxima do MNIST.
+
+* Ampliar o conjunto de imagens próprias — testar múltiplas variações manuscritas por dígito (não apenas uma), para verificar se o erro em 7 e 9 é sistemático ou depende do traçado específico usado.
+
+* Testar outros métodos claśsicos de Machine Learning além de outros de Redes Neurais, como arquiteturas convolucionais (CNN).
 
 ## 🎥 Video de demonstração
 
