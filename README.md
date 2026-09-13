@@ -288,7 +288,7 @@ Além do mais, geramos no Paint imagens de cada um dos números do 0 ao 9 escrit
 
 ## 🎥 Video de demonstração
 
-TODO: trocar link
+[link do video](https://drive.google.com/file/d/1eo-pvm5E4Hkoucgq5i_JyoRRM2ENj82U/view?usp=sharing)
 
 ---
 
